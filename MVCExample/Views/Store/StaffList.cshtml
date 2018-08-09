@@ -1,0 +1,19 @@
+﻿@model List<MVCExample.Models.Staff>
+@{
+    ViewBag.Title = "StaffList";
+}
+
+<h2>StaffList</h2>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Staff Name</th>
+    </tr>
+    @foreach (var staff in Model)
+    {
+        <tr>
+            <td>@staff.ID</td>
+            <td>@staff.Name</td>
+        </tr>
+    }
+</table>

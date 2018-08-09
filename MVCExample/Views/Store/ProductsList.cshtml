@@ -1,0 +1,22 @@
+﻿@model List<MVCExample.Models.Product>
+@{
+    ViewBag.Title = "ProductsList";
+}
+
+<h2>ProductsList</h2>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Product</th>
+        <th>Price</th>
+    </tr>
+        @foreach (var product in Model)
+        {
+            <tr>
+            <td>@product.ID</td>
+            <td>@product.Name</td>
+            <td>@product.Price</td>
+
+        </tr>
+    }
+</table>

@@ -1,0 +1,539 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ExerciseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Customers">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="50" />
+          <Property Name="Address" Type="nchar" MaxLength="100" />
+          <Property Name="Phone" Type="nchar" MaxLength="15" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="100" />
+          <Property Name="Price" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PurchaseHead">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerID" Type="int" />
+          <Property Name="StaffID" Type="int" />
+          <Property Name="StoreID" Type="int" />
+          <Property Name="Date" Type="date" />
+        </EntityType>
+        <EntityType Name="PurchaseLine">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HeadID" Type="int" />
+          <Property Name="ProductID" Type="int" />
+          <Property Name="Quantity" Type="int" />
+        </EntityType>
+        <EntityType Name="Roll Assignment">
+          <Key>
+            <PropertyRef Name="StaffID" />
+            <PropertyRef Name="StoreID" />
+          </Key>
+          <Property Name="StaffID" Type="int" Nullable="false" />
+          <Property Name="StoreID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Rolls">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Staff">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Roll ID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="50" />
+          <Property Name="Location" Type="nchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Stores">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_PurchaseHead_Customers">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
+          <End Role="PurchaseHead" Type="Self.PurchaseHead" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PurchaseHead">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseHead_Staff">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="0..1" />
+          <End Role="PurchaseHead" Type="Self.PurchaseHead" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PurchaseHead">
+              <PropertyRef Name="StaffID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseHead_Stores">
+          <End Role="Stores" Type="Self.Stores" Multiplicity="0..1" />
+          <End Role="PurchaseHead" Type="Self.PurchaseHead" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stores">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PurchaseHead">
+              <PropertyRef Name="StoreID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseLine_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="PurchaseLine" Type="Self.PurchaseLine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PurchaseLine">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseLine_PurchaseHead">
+          <End Role="PurchaseHead" Type="Self.PurchaseHead" Multiplicity="0..1" />
+          <End Role="PurchaseLine" Type="Self.PurchaseLine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PurchaseHead">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PurchaseLine">
+              <PropertyRef Name="HeadID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Roll Assignment_Staff1">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="1" />
+          <End Role="Roll Assignment" Type="Self.Roll Assignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Roll Assignment">
+              <PropertyRef Name="StaffID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Roll Assignment_Stores1">
+          <End Role="Stores" Type="Self.Stores" Multiplicity="1" />
+          <End Role="Roll Assignment" Type="Self.Roll Assignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stores">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Roll Assignment">
+              <PropertyRef Name="StoreID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Staff_Rolls">
+          <End Role="Rolls" Type="Self.Rolls" Multiplicity="1" />
+          <End Role="Staff" Type="Self.Staff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rolls">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Staff">
+              <PropertyRef Name="Roll ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ExerciseModelStoreContainer">
+          <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PurchaseHead" EntityType="Self.PurchaseHead" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PurchaseLine" EntityType="Self.PurchaseLine" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roll Assignment" EntityType="Self.Roll Assignment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rolls" EntityType="Self.Rolls" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Staff" EntityType="Self.Staff" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Stores" EntityType="Self.Stores" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_PurchaseHead_Customers" Association="Self.FK_PurchaseHead_Customers">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="PurchaseHead" EntitySet="PurchaseHead" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseHead_Staff" Association="Self.FK_PurchaseHead_Staff">
+            <End Role="Staff" EntitySet="Staff" />
+            <End Role="PurchaseHead" EntitySet="PurchaseHead" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseHead_Stores" Association="Self.FK_PurchaseHead_Stores">
+            <End Role="Stores" EntitySet="Stores" />
+            <End Role="PurchaseHead" EntitySet="PurchaseHead" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseLine_Product" Association="Self.FK_PurchaseLine_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="PurchaseLine" EntitySet="PurchaseLine" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseLine_PurchaseHead" Association="Self.FK_PurchaseLine_PurchaseHead">
+            <End Role="PurchaseHead" EntitySet="PurchaseHead" />
+            <End Role="PurchaseLine" EntitySet="PurchaseLine" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Roll Assignment_Staff1" Association="Self.FK_Roll Assignment_Staff1">
+            <End Role="Staff" EntitySet="Staff" />
+            <End Role="Roll Assignment" EntitySet="Roll Assignment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Roll Assignment_Stores1" Association="Self.FK_Roll Assignment_Stores1">
+            <End Role="Stores" EntitySet="Stores" />
+            <End Role="Roll Assignment" EntitySet="Roll Assignment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Staff_Rolls" Association="Self.FK_Staff_Rolls">
+            <End Role="Rolls" EntitySet="Rolls" />
+            <End Role="Staff" EntitySet="Staff" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ExerciseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="15" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="PurchaseHeads" Relationship="Self.FK_PurchaseHead_Customers" FromRole="Customers" ToRole="PurchaseHead" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="Price" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PurchaseLines" Relationship="Self.FK_PurchaseLine_Product" FromRole="Product" ToRole="PurchaseLine" />
+        </EntityType>
+        <EntityType Name="PurchaseHead">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="CustomerID" Type="Int32" />
+          <Property Name="StaffID" Type="Int32" />
+          <Property Name="StoreID" Type="Int32" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK_PurchaseHead_Customers" FromRole="PurchaseHead" ToRole="Customers" />
+          <NavigationProperty Name="Staff" Relationship="Self.FK_PurchaseHead_Staff" FromRole="PurchaseHead" ToRole="Staff" />
+          <NavigationProperty Name="Store" Relationship="Self.FK_PurchaseHead_Stores" FromRole="PurchaseHead" ToRole="Stores" />
+          <NavigationProperty Name="PurchaseLines" Relationship="Self.FK_PurchaseLine_PurchaseHead" FromRole="PurchaseHead" ToRole="PurchaseLine" />
+        </EntityType>
+        <EntityType Name="PurchaseLine">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="HeadID" Type="Int32" />
+          <Property Name="ProductID" Type="Int32" />
+          <Property Name="Quantity" Type="Int32" />
+          <NavigationProperty Name="Product" Relationship="Self.FK_PurchaseLine_Product" FromRole="PurchaseLine" ToRole="Product" />
+          <NavigationProperty Name="PurchaseHead" Relationship="Self.FK_PurchaseLine_PurchaseHead" FromRole="PurchaseLine" ToRole="PurchaseHead" />
+        </EntityType>
+        <EntityType Name="Roll">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Staffs" Relationship="Self.FK_Staff_Rolls" FromRole="Rolls" ToRole="Staff" />
+        </EntityType>
+        <EntityType Name="Staff">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Roll_ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Location" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="PurchaseHeads" Relationship="Self.FK_PurchaseHead_Staff" FromRole="Staff" ToRole="PurchaseHead" />
+          <NavigationProperty Name="Roll" Relationship="Self.FK_Staff_Rolls" FromRole="Staff" ToRole="Rolls" />
+          <NavigationProperty Name="Stores" Relationship="Self.Roll_Assignment" FromRole="Staff" ToRole="Stores" />
+        </EntityType>
+        <EntityType Name="Store">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="PurchaseHeads" Relationship="Self.FK_PurchaseHead_Stores" FromRole="Stores" ToRole="PurchaseHead" />
+          <NavigationProperty Name="Staffs" Relationship="Self.Roll_Assignment" FromRole="Stores" ToRole="Staff" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_PurchaseHead_Customers">
+          <End Role="Customers" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="PurchaseHead" Type="Self.PurchaseHead" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PurchaseHead">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseLine_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="PurchaseLine" Type="Self.PurchaseLine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PurchaseLine">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseHead_Staff">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="0..1" />
+          <End Role="PurchaseHead" Type="Self.PurchaseHead" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PurchaseHead">
+              <PropertyRef Name="StaffID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseHead_Stores">
+          <End Role="Stores" Type="Self.Store" Multiplicity="0..1" />
+          <End Role="PurchaseHead" Type="Self.PurchaseHead" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stores">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PurchaseHead">
+              <PropertyRef Name="StoreID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseLine_PurchaseHead">
+          <End Role="PurchaseHead" Type="Self.PurchaseHead" Multiplicity="0..1" />
+          <End Role="PurchaseLine" Type="Self.PurchaseLine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PurchaseHead">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PurchaseLine">
+              <PropertyRef Name="HeadID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Staff_Rolls">
+          <End Role="Rolls" Type="Self.Roll" Multiplicity="1" />
+          <End Role="Staff" Type="Self.Staff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rolls">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Staff">
+              <PropertyRef Name="Roll_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Roll_Assignment">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="*" />
+          <End Role="Stores" Type="Self.Store" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="ExerciseEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Customers" EntityType="Self.Customer" />
+          <EntitySet Name="Products" EntityType="Self.Product" />
+          <EntitySet Name="PurchaseHeads" EntityType="Self.PurchaseHead" />
+          <EntitySet Name="PurchaseLines" EntityType="Self.PurchaseLine" />
+          <EntitySet Name="Rolls" EntityType="Self.Roll" />
+          <EntitySet Name="Staffs" EntityType="Self.Staff" />
+          <EntitySet Name="Stores" EntityType="Self.Store" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <AssociationSet Name="FK_PurchaseHead_Customers" Association="Self.FK_PurchaseHead_Customers">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="PurchaseHead" EntitySet="PurchaseHeads" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseLine_Product" Association="Self.FK_PurchaseLine_Product">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="PurchaseLine" EntitySet="PurchaseLines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseHead_Staff" Association="Self.FK_PurchaseHead_Staff">
+            <End Role="Staff" EntitySet="Staffs" />
+            <End Role="PurchaseHead" EntitySet="PurchaseHeads" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseHead_Stores" Association="Self.FK_PurchaseHead_Stores">
+            <End Role="Stores" EntitySet="Stores" />
+            <End Role="PurchaseHead" EntitySet="PurchaseHeads" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseLine_PurchaseHead" Association="Self.FK_PurchaseLine_PurchaseHead">
+            <End Role="PurchaseHead" EntitySet="PurchaseHeads" />
+            <End Role="PurchaseLine" EntitySet="PurchaseLines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Staff_Rolls" Association="Self.FK_Staff_Rolls">
+            <End Role="Rolls" EntitySet="Rolls" />
+            <End Role="Staff" EntitySet="Staffs" />
+          </AssociationSet>
+          <AssociationSet Name="Roll_Assignment" Association="Self.Roll_Assignment">
+            <End Role="Staff" EntitySet="Staffs" />
+            <End Role="Stores" EntitySet="Stores" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ExerciseModelStoreContainer" CdmEntityContainer="ExerciseEntities">
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="ExerciseModel.Customer">
+              <MappingFragment StoreEntitySet="Customers">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="ExerciseModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PurchaseHeads">
+            <EntityTypeMapping TypeName="ExerciseModel.PurchaseHead">
+              <MappingFragment StoreEntitySet="PurchaseHead">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="StaffID" ColumnName="StaffID" />
+                <ScalarProperty Name="StoreID" ColumnName="StoreID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PurchaseLines">
+            <EntityTypeMapping TypeName="ExerciseModel.PurchaseLine">
+              <MappingFragment StoreEntitySet="PurchaseLine">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="HeadID" ColumnName="HeadID" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rolls">
+            <EntityTypeMapping TypeName="ExerciseModel.Roll">
+              <MappingFragment StoreEntitySet="Rolls">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Staffs">
+            <EntityTypeMapping TypeName="ExerciseModel.Staff">
+              <MappingFragment StoreEntitySet="Staff">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Roll_ID" ColumnName="Roll ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stores">
+            <EntityTypeMapping TypeName="ExerciseModel.Store">
+              <MappingFragment StoreEntitySet="Stores">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="ExerciseModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="Roll_Assignment" TypeName="ExerciseModel.Roll_Assignment" StoreEntitySet="Roll Assignment">
+            <EndProperty Name="Staff">
+              <ScalarProperty Name="ID" ColumnName="StaffID" />
+            </EndProperty>
+            <EndProperty Name="Stores">
+              <ScalarProperty Name="ID" ColumnName="StoreID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

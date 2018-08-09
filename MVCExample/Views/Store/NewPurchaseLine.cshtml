@@ -1,0 +1,28 @@
+﻿@model MVCExample.Models.CreatePurchaseLineViewModel
+@{
+    ViewBag.Title = "NewPurchaseLine";
+}
+
+<h2>NewPurchaseLine</h2>
+<form method="post">
+    Store: @Model.header.Store.Name<br />
+    Staff Member: @Model.header.Staff.Name<br />
+    Customer: @Model.header.Customer.Name<br />
+    <hr />
+    <input type="hidden" name="HeaderID" value="@Model.header.ID" />
+    <label>
+        Product:
+        <select name="ProductID">
+            @foreach (var item in Model.products)
+            {
+                <option value="@item.ID">@item.Name : $@item.Price</option>
+            }
+        </select>
+    </label>
+    <label>
+        Quantity:
+        <input type="number" name="Quantity" />
+    </label>
+    <input type="submit" />
+    <a class="navlink" href="/Store/PurchaseLine?HeadID=@item.ID">Return to Transactions</a>
+</form>

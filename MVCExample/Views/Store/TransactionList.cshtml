@@ -1,0 +1,30 @@
+﻿@model List<MVCExample.Models.PurchaseHead>
+@{
+    ViewBag.Title = "TransactionList";
+}
+
+<h2>TransactionList</h2>
+
+    @foreach (var item in Model)
+    {
+        <table class="table">
+            <tr>
+                <td>@item.Store.Name</td>
+                <td>@item.Staff.Name</td>
+                <td>@item.Customer.Name</td>
+                <td>@item.Date</td>
+            </tr>
+            @foreach(var line in item.PurchaseLines)
+            {
+                <tr>
+                    <td></td>
+                    <td>@line.Product.Name</td>
+                    <td>@line.Quantity</td>
+                    <td>@line.Product.Price</td>
+
+                </tr>
+            }
+        </table>
+    }
+
+

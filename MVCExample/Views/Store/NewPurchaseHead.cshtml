@@ -1,0 +1,39 @@
+﻿@model MVCExample.Models.CreatePurchaseHeadViewModel
+@{
+    ViewBag.Title = "NewPurchaseHead";
+}
+
+<h2>NewPurchaseHead</h2>
+
+<form method="post">
+    <label>
+        Store: <select name="StaffID">
+            @foreach (var item in Model.stores)
+            {
+                <option value="@item.ID">@item.Name</option>
+            }
+        </select>
+    </label>
+    <label>
+        Staff Member: <select name="StoreID">
+            @foreach (var item in Model.staff)
+            {
+                <option value="@item.ID">@item.Name</option>
+            }
+        </select>
+    </label>
+    <label>
+        Customer: <select name="CustomerID">
+            @foreach (var item in Model.customers)
+            {
+                <option value="@item.ID">@item.Name</option>
+            }
+        </select>
+    </label>
+    <label>
+        Date:
+        <input type="date" name="Date" />
+    </label>
+    <input type="submit" />
+    <a class="navlink" href="/Store/NewPurchaseLine"></a>
+</form>
